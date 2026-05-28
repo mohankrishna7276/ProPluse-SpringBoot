@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ProPulse | Real-Time Collaborative Work Management & Analytics Platform
 
 ProPulse is an enterprise-grade, highly-optimized **Real-Time Collaborative Kanban and Performance Analytics Platform** built to showcase production-level architectural expertise. 
@@ -165,3 +166,7 @@ Use these curated responses during technical interview rounds to demonstrate a s
 > *"To prevent audit logs from delaying core database operations, I implemented an **asynchronous event-driven architecture** using Spring's `ApplicationEventPublisher`. 
 > 
 > When a user completes or moves a task, the service publishes a lightweight `AuditLogEvent`. Instead of writing the log synchronously, a decoupled `@EventListener` annotated with `@Async` catches the event in a background thread and persists the log in the audit history database. This completely detaches logging latency from the user's primary HTTP execution path."*
+=======
+# ProPluse-SpringBoot
+ProPulse Platform is a full-stack project management and collaboration application built using React, Vite, Spring Boot, and PostgreSQL/H2. It features JWT authentication, task management, real-time updates, dashboard analytics, and role-based access control for efficient team collaboration.
+>>>>>>> 12db6fd6b64afd8e03b741984eb626f92283465a
