@@ -1,0 +1,88 @@
+spring:
+  application:
+    name: propulse-backend
+  profiles:
+    active: dev
+
+  # Security JWT defaults (can be overridden via ENV vars)
+  security:
+    jwt:
+      secret: "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970" # 256-bit Hex Key
+      expiration-ms: 86400000 # 24 hours
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  
+  # H2 Zero-Config Local Development DB
+  datasource:
+    url: jdbc:h2:mem:propulsedb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: false
+
+  # Caching Config
+  cache:
+    type: caffeine
+    cache-names: project-stats, user-workload
+    caffeine:
+      spec: expireAfterWrite=60s,maximumSize=100
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    com.propulse: DEBUG
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  # Enterprise PostgreSQL Setup
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:propulse}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+  cache:
+    type: caffeine
+    cache-names: project-stats, user-workload
+    caffeine:
+      spec: expireAfterWrite=300s,maximumSize=500
+
+server:
+  port: ${PORT:8080}
